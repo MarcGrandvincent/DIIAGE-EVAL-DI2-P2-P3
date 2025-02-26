@@ -1,0 +1,20 @@
+<div class="table-container">
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Type d'application</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (app of applications; track app.id) {
+        <tr>
+          <td>{{ app.id }}</td>
+          <td>{{ app.name }}</td>
+          <td>{{ app.applicationType === 1 ? 'Public' : 'Professional' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

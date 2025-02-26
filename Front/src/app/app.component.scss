@@ -1,0 +1,15 @@
+.nav-bar {
+  // La gueule de la navbar ça fait peur
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+  button {
+    background-color: #007bff;
+    padding: 8px;
+    color: white;
+    border-radius: 6px;
+    border-color: #007bff;
+  }
+}
