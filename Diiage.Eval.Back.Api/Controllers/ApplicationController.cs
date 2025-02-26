@@ -2,7 +2,7 @@ using Diiage.Eval.Back.Api.Models;
 using Diiage.Eval.Back.Api.Models.Requests;
 using Diiage.Eval.Back.Api.Models.Responses;
 using Diiage.Eval.Back.Application.Contracts;
-using Diiage.Eval.Back.Domain.Models.Applications;
+using Diiage.Eval.Back.Domain.Entities.Applications;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +22,7 @@ public class ApplicationController(IApplicationService applicationService, IMapp
     {
         var application = await applicationService.CreateApplicationAsync(request.Name, request.ApplicationType, cancellationToken);
 
-        return Ok(mapper.Map<ApplicationBl, ApplicationResponse>(application));
+        return Ok(mapper.Map<ApplicationDao, ApplicationResponse>(application));
     }
 
     /// <summary>
@@ -35,6 +35,6 @@ public class ApplicationController(IApplicationService applicationService, IMapp
     {
         var application = await applicationService.GetApplicationsAsync(cancellationToken);
 
-        return Ok(mapper.Map<List<ApplicationBl>, List<ApplicationResponse>>(application));
+        return Ok(mapper.Map<List<ApplicationDao>, List<ApplicationResponse>>(application));
     }
 }

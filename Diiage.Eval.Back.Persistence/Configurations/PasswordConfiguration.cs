@@ -13,6 +13,8 @@ public class PasswordConfiguration : IEntityTypeConfiguration<PasswordDao>
 
         builder.HasKey(b => b.Id);
 
+        builder.Property(p => p.AccountName);
+        
         builder.Property(b => b.EncryptedPassword);
         
         builder.Property(b => b.IV);

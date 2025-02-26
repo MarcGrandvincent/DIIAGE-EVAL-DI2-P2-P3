@@ -3,7 +3,7 @@ using Backoffice.Core.Repositories.Transactions;
 using Diiage.Eval.Back.Application.Contracts;
 using Diiage.Eval.Back.Domain.Entities.Applications;
 using Diiage.Eval.Back.Domain.Enums;
-using Diiage.Eval.Back.Domain.Models.Applications;
+using Diiage.Eval.Back.Domain.Exceptions;
 using Diiage.Eval.Back.Repositories.Interfaces;
 using MapsterMapper;
 
@@ -13,8 +13,22 @@ public class ApplicationService(IUnitOfWork unitOfWork, IMapper mapper) : IAppli
 {
     private readonly IGenericRepository<ApplicationDao> _applicationRepository =
         unitOfWork.GetRepository<ApplicationDao>();
-    
-    public async Task<ApplicationBl> CreateApplicationAsync(string name, ApplicationType type, CancellationToken cancellationToken = default)
+
+    public async Task<ApplicationDao> GetApplicationByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var application = await _applicationRepository.GetFirstOrDefaultAsync(
+            predicate: e => e.Id == id,
+            orderBy: null,
+            include: null,
+            disableTracking: false,
+            cancellationToken: cancellationToken);
+
+        if (application is null) throw new NotFoundException();
+        
+        return application;
+    }
+
+    public async Task<ApplicationDao> CreateApplicationAsync(string name, ApplicationType type, CancellationToken cancellationToken = default)
     {
         await using var tx = _applicationRepository.BeginTransaction();
 
@@ -35,10 +49,10 @@ public class ApplicationService(IUnitOfWork unitOfWork, IMapper mapper) : IAppli
         await unitOfWork.SaveAsync(cancellationToken);
         await tx.CommitAsync(cancellationToken);
 
-        return mapper.Map<ApplicationDao, ApplicationBl>(application);
+        return application;
     }
 
-    public async Task<List<ApplicationBl>> GetApplicationsAsync(CancellationToken cancellationToken = default)
+    public async Task<List<ApplicationDao>> GetApplicationsAsync(CancellationToken cancellationToken = default)
     {
         var applications = await _applicationRepository.GetMultipleAsync(
             predicate: null,
@@ -47,6 +61,6 @@ public class ApplicationService(IUnitOfWork unitOfWork, IMapper mapper) : IAppli
             disableTracking: false,
             cancellationToken: cancellationToken);
 
-        return mapper.Map<List<ApplicationDao>, List<ApplicationBl>>(applications);
+        return applications;
     }
 }

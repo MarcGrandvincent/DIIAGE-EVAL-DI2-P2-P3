@@ -6,4 +6,5 @@ public class PasswordResponse
     public string EncryptedPassword { get; set; } = string.Empty;
     public string IV { get; set; } = string.Empty;
     public int ApplicationId { get; set; }
+    public string AccountName { get; set; } = string.Empty;
 }

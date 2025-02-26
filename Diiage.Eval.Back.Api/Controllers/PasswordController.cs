@@ -15,7 +15,7 @@ public class PasswordController(IPasswordService passwordService, IMapper mapper
         CancellationToken cancellationToken)
     {
         var application =
-            await passwordService.CreatePassword(request.Password, request.ApplicationId, cancellationToken);
+            await passwordService.CreatePassword(request.AccountName, request.Password, request.ApplicationId, cancellationToken);
 
         return Ok(mapper.Map<PasswordBl, PasswordResponse>(application));
     }

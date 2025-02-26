@@ -8,7 +8,7 @@ using MapsterMapper;
 
 namespace Diiage.Eval.Back.Application.Services;
 
-public class PasswordService(IUnitOfWork unitOfWork, IMapper mapper) : IPasswordService
+public class PasswordService(IUnitOfWork unitOfWork, IMapper mapper, IApplicationService applicationService) : IPasswordService
 {
     private readonly IGenericRepository<PasswordDao> _passwordRepository =
         unitOfWork.GetRepository<PasswordDao>();
@@ -42,15 +42,16 @@ public class PasswordService(IUnitOfWork unitOfWork, IMapper mapper) : IPassword
         await tx.CommitAsync(cancellationToken);
     }
 
-    public async Task<PasswordBl> CreatePassword(string password, int applicationId, CancellationToken cancellationToken = default)
+    public async Task<PasswordBl> CreatePassword(string accountName, string password, int applicationId, CancellationToken cancellationToken = default)
     {
         await using var tx = _passwordRepository.BeginTransaction();
 
-        // TODO : Vérifier que l'application existe et crypter le mot de passe en fonction du type de celui-ci
-
-        var passwordDao = new PasswordDao()
+        var application = await applicationService.GetApplicationByIdAsync(applicationId, cancellationToken);
+        
+        var passwordDao = new PasswordDao
         {
-            EncryptedPassword = password,
+            AccountName = accountName,
+            EncryptedPassword = application.Encrypt(password),
             ApplicationId = applicationId,
         };
         
