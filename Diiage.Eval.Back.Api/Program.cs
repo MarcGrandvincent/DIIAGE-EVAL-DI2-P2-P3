@@ -1,5 +1,6 @@
 using Diiage.Eval.Back.Api.Configurations;
 using Diiage.Eval.Back.Api.Configurations.Installers.ProblemsDetails;
+using Diiage.Eval.Back.Api.Middleware;
 using Diiage.Eval.Back.Application;
 using Diiage.Eval.Back.Persistence;
 using Hellang.Middleware.ProblemDetails;
@@ -30,6 +31,7 @@ app.InstallApps(
     app.Configuration,
     typeof(IServiceInstaller).Assembly);
 
+app.UseMiddleware<ApiKeyMiddleware>();
 app.UseCors("AllowConfiguredOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
