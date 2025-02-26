@@ -10,4 +10,8 @@
       <Folder Include="Migrations\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Diiage.Eval.Back.Persistence\Diiage.Eval.Back.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

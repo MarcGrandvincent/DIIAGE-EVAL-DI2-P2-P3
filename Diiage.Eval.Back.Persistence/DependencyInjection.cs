@@ -11,7 +11,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration appSettings)
     {
-        services.ConfigureDbContext(appSettings["ConnectionString:Db"]);
+        services.ConfigureDbContext(appSettings["ConnectionStrings:Db"]);
         RegisterRepositories(services);
 
         return services;
